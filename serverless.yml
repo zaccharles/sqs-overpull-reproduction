@@ -1,0 +1,32 @@
+service: sqs-overpull
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+functions:
+  test:
+    handler: handler.test
+    reservedConcurrency: 1
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt: [ Queue, Arn ]
+          batchSize: 1
+
+resources:
+  Resources:
+    Queue:
+      Type: AWS::SQS::Queue
+      Properties: 
+        RedrivePolicy:
+          deadLetterTargetArn: 
+            Fn::GetAtt: [ DeadLetterQueue, Arn ]
+          maxReceiveCount: 1
+    DeadLetterQueue:
+      Type: AWS::SQS::Queue
+
+  Outputs:
+    QueueUrl:
+      Value:
+        Ref: Queue
