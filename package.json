@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "aws-sdk": "^2.471.0",
+    "aws-sdk": "^2.814.0",
     "serverless": "^1.44.1",
     "uuid": "^3.3.2"
   }
